@@ -16,9 +16,7 @@ router.get('/add-product', (req, res, next)=> {
    res.render('add-product', {
       title: 'Add product',
       path: '/admin/add-product',
-      activeAddProduct: true,
-      formsCSS: true,
-      productCSS: true
+      activeAddProduct: true
    });
 });
 
@@ -29,6 +27,7 @@ router.post('/add-product', (req, res, next) => {
       title: req.body.title
    })
    res.redirect('/');
+   
 });
 
 exports.routes = router;

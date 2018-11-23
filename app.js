@@ -2,17 +2,17 @@ const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const expressHbs = require('express-handlebars'); // handlebars
+// const expressHbs = require('express-handlebars'); // handlebars
 
 const app = express();
 
-// setting the template engine for PUG
-app.engine('hbs', expressHbs({
-   layoutsDir: 'views/layouts/',
-   defaultLayout: 'main-layout',
-   extname: 'hbs'
-}));
-app.set('view engine', 'hbs');
+// setting the template engine
+// app.engine('hbs', expressHbs({
+//    layoutsDir: 'views/layouts/',
+//    defaultLayout: 'main-layout',
+//    extname: 'hbs'
+// }));
+app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 const adminData = require('./routes/admin');
@@ -34,7 +34,8 @@ app.use((req, res, next) => {
    //    path.join(__dirname, 'views', '404.html')
    // );
    res.status(404).render('404', {
-      title: 'Page not Found'
+      title: 'Page not Found',
+      path: ''
    });
 });
 
