@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const errorController = require('./controllers/error');
-const db = require('./util/database');
+const sequelize = require('./util/database');
 
 const app = express();
 
@@ -28,5 +28,12 @@ app.use(shopRoutes);
 // Displaying 404 page
 app.use(errorController.get404);
 
-// Server listens
-app.listen(3000);
+// Check all the models that are define in 'MODELS' folder and syncs to the database
+sequelize.sync()
+   .then(result => {
+      // console.log(result);
+      // Server listens
+      app.listen(3000);
+   })
+   .catch();
+

@@ -1,41 +1,52 @@
 const Product = require('../models/product');
 const Cart = require('../models/cart');
 
-exports.getProducts = (req, res, next) => {
-   Product.fetchAll()
-      .then(([rows, fieldData]) => {
-         res.render('shop/product-list', {
-            products: rows,
-            title: 'All Products',
-            path: '/products'
-         });
-      })
-      .catch(err => console.log(err));
+exports.getProducts = (req, res, next) => {   
+   Product.findAll()
+   .then(products => {
+      res.render('shop/product-list', {
+         products: products,
+         title: 'All Products',
+         path: '/products'
+      });
+   })
+   .catch(err => console.log(err));
 }
 
 exports.getProduct = (req, res, next) => {
    const prodId = req.params.productId;
+   // Product.findAll({
+   //    where: { id: prodId}
+   // })
+   // .then((product) => {
+   //    res.render('shop/product-detail', {
+   //       product: product[0],
+   //       title: product[0].title,
+   //       path: '/products'
+   //    });
+   // })
+   // .catch(err => console.log(err));
    Product.findById(prodId)
-      .then(([product]) => {
-         res.render('shop/product-detail', {
-            product: product[0],
-            title: product.title,
-            path: '/products'
-         });
-      })
-      .catch(err => console.log(err));
+   .then(product => {
+      res.render('shop/product-detail', {
+         product: product,
+         title: product.title,
+         path: '/products'
+      });
+   })
+   .catch(err => console.log(err));
 }
 
 exports.getIndex = (req, res, next) => {
-   Product.fetchAll()
-      .then(([rows, fieldData]) => {
-         res.render('shop/index', {
-            products: rows,
-            title: 'Shop',
-            path: '/'
-         })
+   Product.findAll()
+   .then(products => {
+      res.render('shop/index', {
+         products: products,
+         title: 'Shop',
+         path: '/'
       })
-      .catch(err => console.log(err));
+   })
+   .catch(err => console.log(err));
 }
 
 exports.postCart = (req, res, next) => {
