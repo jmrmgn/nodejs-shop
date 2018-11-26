@@ -24,10 +24,10 @@ router.post('/cart', shopController.postCart);
 // POST => /cart-delete-item
 router.post('/cart-delete-item', shopController.postCartDeleteProduct);
 
+// POST => /create-order
+router.post('/create-order', shopController.postOrder);
+
 // GET => /cart
 router.get('/orders', shopController.getOrders);
-
-// GET => /checkout
-router.get('/checkout', shopController.getCheckout);
 
 module.exports = router;
