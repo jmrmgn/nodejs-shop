@@ -42,7 +42,7 @@ exports.getProduct = (req, res, next) => {
 }
 
 exports.getIndex = (req, res, next) => {
-   Product.findAll()
+   Product.fetchAll()
    .then(products => {
       res.render('shop/index', {
          products: products,
