@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const errorController = require('./controllers/error');
-// const User = require('./models/user');
+const User = require('./models/user');
 
 const app = express();
 
@@ -22,14 +22,14 @@ app.use(bodyParser.urlencoded({extended: false}));
 //for static middleware(images,, .css, .js )
 app.use(express.static(path.join(__dirname, 'public'))); 
 
-// app.use( (req, res, next) => {
-//    User.findById('5c17aa1913a7fb1614ed0bfe')
-//       .then(user => {
-//          req.user = new User(user.name, user.email, user.cart, user._id);
-//          next();
-//       })
-//       .catch(err => console.log(err));
-// })
+app.use( (req, res, next) => {
+   User.findById('5c18aa5b287189298088db67')
+      .then(user => {
+         req.user = user;
+         next();
+      })
+      .catch(err => console.log(err));
+})
 
 // Routes
 app.use('/admin', adminRoutes);
@@ -46,7 +46,20 @@ mongoose
       }
    )
    .then(result => {
+      User
+         .findOne()
+         .then(user => {
+            if ( !user ) {
+               const user = new User({
+                  name: "Jomar",
+                  email: "test@gmail.com",
+                  cart: {
+                     items: []
+                  }
+               });
+               user.save();
+            }
+         });
       app.listen(3000);
-      console.log('Connected');
    })
    .catch(err => console.log(`Connection error: ${err}`));
