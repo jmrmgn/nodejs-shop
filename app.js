@@ -49,4 +49,4 @@ mongoose
       app.listen(3000);
       console.log('Connected');
    })
-   .catch(err => console.log(err));
+   .catch(err => console.log(`Connection error: ${err}`));
