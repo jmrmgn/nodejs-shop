@@ -8,6 +8,28 @@ exports.getAddProduct = (req, res, next)=> {
    });
 }
 
+exports.postAddProduct = (req, res, next) => {
+   const title = req.body.title;
+   const price = req.body.price;
+   const description = req.body.description;
+   const imageUrl = req.body.imageUrl;
+   const product = new Product({
+      title: title,
+      price: price,
+      description: description,
+      imageUrl: imageUrl
+   });
+
+   product
+      .save()
+      .then(result => {
+         // console.log(result)
+         console.log('Created Product');
+         res.redirect('/admin/products');
+      })
+      .catch(err => console.log(err));
+}
+
 exports.getEditProduct = (req, res, next) => {
    const editMode = req.query.edit;
    if (!editMode) {
@@ -45,23 +67,6 @@ exports.postEditProduct = (req, res, next) => {
       .save()
       .then(result => {
          console.log('Updated Product!')
-         res.redirect('/admin/products');
-      })
-      .catch(err => console.log(err));
-}
-
-exports.postAddProduct = (req, res, next) => {
-   const title = req.body.title;
-   const price = req.body.price;
-   const description = req.body.description;
-   const imageUrl = req.body.imageUrl;
-   const product = new Product(title, price, description, imageUrl, null, req.user._id);
-
-   product
-      .save()
-      .then(result => {
-         // console.log(result)
-         console.log('Created Product');
          res.redirect('/admin/products');
       })
       .catch(err => console.log(err));
