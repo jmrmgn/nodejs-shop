@@ -6,11 +6,11 @@ const shopController = require('../controllers/shop');
 
 const router = express.Router();
 
-// // GET => /
-// router.get('/', shopController.getIndex);
+// GET => /
+router.get('/', shopController.getIndex);
 
-// // GET => /products
-// router.get('/products', shopController.getProducts);
+// GET => /products
+router.get('/products', shopController.getProducts);
 
 // // GET => /product/<productId>
 // router.get('/products/:productId', shopController.getProduct);
