@@ -81,6 +81,8 @@ exports.postEditProduct = (req, res, next) => {
 exports.getProducts = (req, res, next) => {
    Product
       .find()
+      .select('title price imageUrl -_id')
+      .populate('userId', 'name')
       .then((products) => {
          res.render('admin/products', {
             products: products,
@@ -93,7 +95,7 @@ exports.getProducts = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
    const productId = req.body.productId;
-   Product.findByIdAndRemove(productId)
+   Product.findOneAndDelete(productId)
       .then(() => {
          console.log('Product is deleted');
          res.redirect('/admin/products');

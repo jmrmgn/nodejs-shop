@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public'))); 
 
 app.use( (req, res, next) => {
-   User.findById('5c18aba8185dbd3950b84a76')
+   User.findById('5c199c1b3a1e9733d4324f2f')
       .then(user => {
          req.user = user;
          next();
@@ -40,7 +40,8 @@ app.use(errorController.get404);
 
 mongoose
    .connect(
-      'mongodb+srv://jomar26:EYqtc4E8tFqcDmin@cluster0-jfpaj.mongodb.net/shop?retryWrites=true',
+      // 'mongodb+srv://jomar26:EYqtc4E8tFqcDmin@cluster0-jfpaj.mongodb.net/shop?retryWrites=true', Mongo Atlas
+      'mongodb://admin:test1234@ds139459.mlab.com:39459/shop',
       {
          useNewUrlParser: true
       }
@@ -61,5 +62,6 @@ mongoose
             }
          });
       app.listen(3000);
+      console.log("Connected");
    })
    .catch(err => console.log(`Connection error: ${err}`));
