@@ -12,11 +12,29 @@
             <% orders.forEach(order => { %>
                <li>
                   <h1># <%= order._id %></h1>
-                  <ul>
-                     <% order.items.forEach(product => { %>
-                        <li><%= product.title %> (<%= product.quantity %>)</li>
-                     <% }); %>
-                  </ul>
+                  <table border="1">
+                     <thead>
+                        <th width="50%">Product</th>
+                        <th width="20%">Price</th>
+                        <th width="10%">Qty</th>
+                        <th width="20%">Sub total</th>
+                     </thead>
+                     <tbody>
+                        <% order.products.forEach(p => { %>
+                           <tr>
+                              <td><%= p.product.title %></td>
+                              <td>&#0036; <%= p.product.price %></td>
+                              <td align="center"><%= p.quantity %></td>
+                              <td>&#0036; <%= p.product.price * p.quantity %></td>
+                           </tr>
+                        <% }); %>
+                     </tbody>
+                  </table>
+               </li>
+               <li>
+                  <h4>
+                    Total: 
+                  </h4>
                </li>
             <% }); %>
          </ul>
