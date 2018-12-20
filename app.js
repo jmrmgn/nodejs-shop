@@ -11,7 +11,14 @@ const flash = require('connect-flash');
 const errorController = require('./controllers/error');
 const User = require('./models/user');
 
+// FOR MONGODB ATLAS
+// const MONGODB_URI = 'mongodb+srv://jomar26:EYqtc4E8tFqcDmin@cluster0-jfpaj.mongodb.net/shop?retryWrites=true'
+
+// FOR CLOUD DATABASE
 const MONGODB_URI = 'mongodb://admin:test1234@ds139459.mlab.com:39459/shop';
+
+// FOR LOCAL DATABASE
+// const MONGODB_URI = 'mongodb://localhost/db-shop';
 
 const app = express();
 const store = new MongoDBStore({
@@ -74,10 +81,10 @@ app.use(errorController.get404);
 
 mongoose
    .connect(
-      // 'mongodb+srv://jomar26:EYqtc4E8tFqcDmin@cluster0-jfpaj.mongodb.net/shop?retryWrites=true', Mongo Atlas
       MONGODB_URI,
       {
-         useNewUrlParser: true
+         useNewUrlParser: true,
+         // userMongoClient: true
       }
    )
    .then(result => {
