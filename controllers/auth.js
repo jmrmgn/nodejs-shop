@@ -72,7 +72,7 @@ exports.postSignup = (req, res, next) => {
                return user.save();
             })
             .then(result => {
-               res.redirect('/');
+               res.redirect('/login');
             });
       })
       .catch(err => console.log(err));
