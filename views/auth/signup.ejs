@@ -10,7 +10,7 @@
       <div>
          <%= (errorMessage) ? errorMessage : '' %>
       </div>
-      <form class="signup-form" action="/signup" method="POST" autocomplete="off">
+      <form class="signup-form" action="/signup" method="POST" autocomplete="off" novalidate>
          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
          <div class="form-control">
             <label for="email">Email address</label>

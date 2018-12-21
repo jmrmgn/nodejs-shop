@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const dateformat = require('dateformat');
 const mailer = require('../helpers/mailer');
+const { validationResult } = require('express-validator/check');
 
 const User = require('../models/user');
 
@@ -75,37 +76,37 @@ exports.getSignup = (req, res, next) => {
 exports.postSignup = (req, res, next) => {
    const email = req.body.email;
    const password = req.body.password;
-   const confirmPassword = req.body.confirmPassword;
 
-   User
-      .findOne({ email: email})
-      .then(userDoc => {
-         if (userDoc) {
-            req.flash('error', 'Email already exists.');
-            return res.redirect('/signup');
-         }
-         return bcrypt
-            .hash(password, 12)
-            .then(hashedPassword => {
-               const user = new User({
-                  email: email,
-                  password: hashedPassword,
-                  cart: { items: [] }
-               })
-               return user.save();
-            })
-            .then(result => {
-               res.redirect('/login');
+   const errors = validationResult(req);
+   if (!errors.isEmpty()) {
+      console.log(errors.array());
+      // 422 = Validation Error status code
+      return res.status(422).render('auth/signup', {
+         title: 'Sign up',
+         path: '/signup',
+         errorMessage: errors.array()[0].msg
+      });
+   }
+   bcrypt
+      .hash(password, 12)
+      .then(hashedPassword => {
+         const user = new User({
+            email: email,
+            password: hashedPassword,
+            cart: { items: [] }
+         })
+         return user.save();
+      })
+      .then(result => {
+         res.redirect('/login');
 
-               const from = 'shop@node-complete.com';
-               const subject = 'Signup successful!';
-               const html = `
-                  <h3>Welcome to Node Shop!</h3>
-               `;
+         const from = 'shop@node-complete.com';
+         const subject = 'Signup successful!';
+         const html = `
+            <h3>Welcome to Node Shop!</h3>
+         `;
 
-               return mailer.send_mail(email, from, subject, html);
-            })
-            .catch(err => console.log(err))
+         return mailer.send_mail(email, from, subject, html);
       })
       .catch(err => console.log(err));
 };
