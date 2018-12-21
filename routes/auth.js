@@ -9,7 +9,18 @@ const router = express.Router();
 
 router.get('/login', auth.loggedIn, authController.getLogin);
 
-router.post('/login', auth.loggedIn, authController.postLogin);
+router.post(
+   '/login',
+   auth.loggedIn,
+   [
+      body('email', 'Please enter a valid email address')
+         .isEmail(),
+      body('password')
+         .isLength({ min: 5 })
+         .isAlphanumeric()
+         .trim()
+   ],
+   authController.postLogin);
 
 router.get('/signup', auth.loggedIn, authController.getSignup);
 
@@ -17,9 +28,8 @@ router.post(
    '/signup',
    auth.loggedIn,
    [
-      check('email')
+      check('email', 'Please enter a valid email')
          .isEmail()
-         .withMessage('Please enter a valid email')
          .custom((value, {req}) => {
             return User
                .findOne({ email: value})
@@ -31,8 +41,10 @@ router.post(
          }),
       body('password', 'Password must contain minimum of 5 characters and Alphanumeric')
          .isLength({ min: 5 })
-         .isAlphanumeric(),
+         .isAlphanumeric()
+         .trim(),
       body('confirmPassword')
+         .trim()
          .custom( (value, { req }) => {
             if ( value !== req.body.password ) {
                throw new Error(`Passwords doesn't match`);
