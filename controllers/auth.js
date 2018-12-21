@@ -1,16 +1,11 @@
 const crypto = require('crypto');
 
 const bcrypt = require('bcryptjs');
-const nodemailer = require('nodemailer');
-const sendgridTransport = require('nodemailer-sendgrid-transport');
+const dateformat = require('dateformat');
+const mailer = require('../helpers/mailer');
 
 const User = require('../models/user');
 
-const transporter = nodemailer.createTransport(sendgridTransport({
-   auth: {
-      api_key: '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'
-   }
-}));
 
 exports.getLogin = (req, res, next) => {
    let message = req.flash('error');
@@ -101,12 +96,14 @@ exports.postSignup = (req, res, next) => {
             })
             .then(result => {
                res.redirect('/login');
-               return transporter.sendMail({
-                  to: email,
-                  from: 'shop@node-complete.com',
-                  subject: 'Signup succeeded!',
-                  html: '<h1>Welcome to Node shop!, Enjoy shopping</h1>'
-               });
+
+               const from = 'shop@node-complete.com';
+               const subject = 'Signup successful!';
+               const html = `
+                  <h3>Welcome to Node Shop!</h3>
+               `;
+
+               return mailer.send_mail(email, from, subject, html);
             })
             .catch(err => console.log(err))
       })
@@ -148,15 +145,16 @@ exports.postReset = (req, res, next) => {
          .then(user => {
             if ( user ) {
                res.redirect('/');
-               transporter.sendMail({
-                  to: req.body.email,
-                  from: 'shop@node-complete.com',
-                  subject: 'Password reset',
-                  html: `
+
+               const from = 'shop@node-complete.com';
+               const subject = 'Password reset';
+               const html = `
                      <p>You requested a password reset</p>
                      <p>Click this <a href="http://localhost:3000/reset/${token}">link</a> to set a new password.</p>
-                  `
-               });
+                  `;
+
+               mailer.send_mail(req.body.email, from, subject, html);
+
                user.resetToken = token;
                user.resetTokenExpiration = Date.now() + 3600000;
                return user.save();
@@ -222,15 +220,16 @@ exports.postNewPassword = (req, res, next) => {
    })
    .then(result => {
       res.redirect('/login');
-      transporter.sendMail({
-         to: resetUser.email,
-         from: 'shop@node-complete.com',
-         subject: 'Reset password succeeded!',
-         html: `
-            <p>Are you aware that your password was reset last ${Date.now()}?</p>
-            <p>If it's not you, please log in your account immediately.</p>
-         `
-      });
+
+      const from = 'shop@node-complete.com';
+      const subject = 'Reset password succeeded!';
+      const html = `
+         <p>Are you aware that your password was reset last ${dateformat(new Date, "dddd, mmmm dS, yyyy, h:MM:ss TT")}?</p>
+         <p>If it's not you, please log in your account immediately.</p>
+      `;
+
+      mailer.send_mail(resetUser.email, from, subject, html);
+
    })
    .catch(err => console.log(err));
 
