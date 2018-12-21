@@ -20,13 +20,33 @@ exports.getLogin = (req, res, next) => {
    res.render('auth/login', {
       title: 'Login',
       path: '/login',
-      errorMessage: message
+      errorMessage: message,
+      oldInput: {
+         email: '',
+         password: ''
+      },
+      validationErrors: []
    });
 };
 
 exports.postLogin = (req, res, next) => {
    const email = req.body.email;
    const password = req.body.password;
+
+   const errors = validationResult(req);
+   if (!errors.isEmpty()) {
+      // 422 = Validation Error status code
+      return res.status(422).render('auth/login', {
+         title: 'Login',
+         path: '/login',
+         errorMessage: errors.array()[0].msg,
+         oldInput: {
+            email: email,
+            password: password
+         },
+         validationErrors: errors.array()
+      });
+   }
 
    User
       .findOne({ email: email })
@@ -46,8 +66,16 @@ exports.postLogin = (req, res, next) => {
                   })
                }
                else {
-                  req.flash('error', 'Invalid email or password.');
-                  res.redirect('/login');
+                  return res.status(422).render('auth/login', {
+                     title: 'Login',
+                     path: '/login',
+                     errorMessage: 'Invalid email or password.',
+                     oldInput: {
+                        email: email,
+                        password: password
+                     },
+                     validationErrors: []
+                  });
                }
             })
             .catch(err => {
