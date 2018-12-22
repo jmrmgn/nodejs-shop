@@ -1,1 +1,2 @@
-message
+VSCODE MUST HAVE EXTENSIONS
+- Auto rename tag
