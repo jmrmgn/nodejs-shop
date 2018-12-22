@@ -7,6 +7,7 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 const flash = require('connect-flash');
+const multer = require('multer');
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
@@ -28,6 +29,24 @@ const store = new MongoDBStore({
 
 const csrfProtection = csrf();
 
+const fileStorage = multer.diskStorage({
+   destination: (req, file, cb) => {
+      cb(null, 'images');
+   },
+   filename: (req, file, cb) => {
+      cb(null, `${Date.now()}-${file.originalname}`);
+   }
+});
+
+const fileFilter = (req, file, cb) => {
+   if ( file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg' ) {
+      cb(null, true);
+   }
+   else {
+      cb(null, false);
+   }
+}
+
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
@@ -39,8 +58,12 @@ app.set('views', 'views');
 // Getting the form within the body
 app.use(bodyParser.urlencoded({extended: false}));
 
+// File handling
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single("image"));
+
 //for static middleware(images,, .css, .js )
 app.use(express.static(path.join(__dirname, 'public'))); 
+app.use('/images', express.static(path.join(__dirname, 'images'))); 
 
 // SEssion middleware
 app.use(session({
