@@ -28,6 +28,7 @@
                               <td>&#0036; <%= p.product.price * p.quantity %></td>
                            </tr>
                         <% }); %>
+                        <a href="/orders/<%= order._id %>">Invoice</a>
                      </tbody>
                   </table>
                </li>

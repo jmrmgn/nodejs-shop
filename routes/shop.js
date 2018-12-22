@@ -29,4 +29,6 @@ router.post('/create-order', auth.notLoggedIn, shopController.postOrder);
 // GET => /cart
 router.get('/orders', auth.notLoggedIn, shopController.getOrders);
 
+router.get('/orders/:orderId', auth.notLoggedIn, shopController.getInvoice);
+
 module.exports = router;
