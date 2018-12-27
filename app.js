@@ -12,11 +12,8 @@ const multer = require('multer');
 const errorController = require('./controllers/error');
 const User = require('./models/user');
 
-// FOR MONGODB ATLAS
-// const MONGODB_URI = 'mongodb+srv://jomar26:EYqtc4E8tFqcDmin@cluster0-jfpaj.mongodb.net/shop?retryWrites=true'
-
 // FOR CLOUD DATABASE
-const MONGODB_URI = 'mongodb://admin:test1234@ds139459.mlab.com:39459/shop';
+const MONGODB_URI = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@ds139459.mlab.com:39459/${process.env.MONGO_DEFAULT_DATABASE}`;
 
 // FOR LOCAL DATABASE
 // const MONGODB_URI = 'mongodb://localhost/db-shop';
@@ -122,7 +119,7 @@ mongoose
       }
    )
    .then(result => {
-      app.listen(3000);
+      app.listen(process.env.NODE_ENV || 3000);
       console.log("Connected");
    })
    .catch(err => console.log(`Connection error: ${err}`));
