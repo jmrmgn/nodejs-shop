@@ -7,7 +7,7 @@
     "node": "11.2.0"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=production MONGO_USER=admin MONGO_PASSWORD=qweasd123 MONGO_DEFAULT_DATABASE=shop node app.js",
+    "start": "cross-env NODE_ENV=production MONGO_USER=admin MONGO_PASSWORD=qweasd123 MONGO_DEFAULT_DATABASE=shop MAIL_API_KEY=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 node app.js",
     "start-server": "node app.js",
     "start:dev": "node app.js"
   },
