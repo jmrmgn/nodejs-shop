@@ -16,10 +16,10 @@ const User = require('./models/user');
 // const MONGODB_URI = 'mongodb+srv://jomar26:EYqtc4E8tFqcDmin@cluster0-jfpaj.mongodb.net/shop?retryWrites=true'
 
 // FOR CLOUD DATABASE
-// const MONGODB_URI = 'mongodb://admin:test1234@ds139459.mlab.com:39459/shop';
+const MONGODB_URI = 'mongodb://admin:test1234@ds139459.mlab.com:39459/shop';
 
 // FOR LOCAL DATABASE
-const MONGODB_URI = 'mongodb://localhost/db-shop';
+// const MONGODB_URI = 'mongodb://localhost/db-shop';
 
 const app = express();
 const store = new MongoDBStore({
