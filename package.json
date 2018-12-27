@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "description": "Complete Node.js guide",
   "main": "app.js",
+  "engines": {
+    "node": "11.2.0"
+  },
   "scripts": {
     "start": "cross-env NODE_ENV=production MONGO_USER=admin MONGO_PASSWORD=qweasd123 MONGO_DEFAULT_DATABASE=shop node app.js",
     "start-server": "node app.js",
-    "start:dev": "nodemon app.js"
+    "start:dev": "node app.js"
   },
   "author": "Jomar Magno",
   "license": "ISC",
